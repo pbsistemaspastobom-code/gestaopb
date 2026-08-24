@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 30 25% 97%;
+    --foreground: 150 30% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 150 30% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 150 30% 12%;
+
+    /* Verde floresta #00421d */
+    --primary: 146 100% 13%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 146 30% 92%;
+    --secondary-foreground: 146 100% 13%;
+
+    --muted: 30 15% 92%;
+    --muted-foreground: 150 8% 42%;
+
+    /* Dourado de destaque */
+    --gold: 45 100% 45%;
+    --gold-foreground: 150 30% 12%;
+    --accent: 45 100% 45%;
+    --accent-foreground: 150 30% 12%;
+
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Status KPI */
+    --kpi-ontarget: 145 63% 49%;   /* #2ecc71 */
+    --kpi-attention: 37 91% 55%;   /* #f5a623 */
+    --kpi-critical: 6 78% 57%;     /* #e74c3c */
+    --kpi-nodata: 150 6% 70%;
+
+    --border: 146 15% 86%;
+    --input: 146 15% 86%;
+    --ring: 146 100% 13%;
+    --radius: 0.7rem;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground font-sans antialiased; }
+}
