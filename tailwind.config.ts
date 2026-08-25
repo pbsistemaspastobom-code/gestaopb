@@ -7,8 +7,8 @@ export default {
     container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
     extend: {
       fontFamily: {
-        sans: ["Montserrat", "system-ui", "sans-serif"],
-        display: ["Montserrat", "sans-serif"],
+        sans: ["Hanken Grotesk", "system-ui", "sans-serif"],
+        display: ["Hanken Grotesk", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -22,6 +22,9 @@ export default {
         muted: { DEFAULT: "hsl(var(--muted))", foreground: "hsl(var(--muted-foreground))" },
         accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
         gold: { DEFAULT: "hsl(var(--gold))", foreground: "hsl(var(--gold-foreground))" },
+        "primary-container": { DEFAULT: "hsl(var(--primary-container))", foreground: "hsl(var(--on-primary-container))" },
+        "surface-low": "hsl(var(--surface-low))",
+        "surface-container": "hsl(var(--surface-container))",
         popover: { DEFAULT: "hsl(var(--popover))", foreground: "hsl(var(--popover-foreground))" },
         card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
         kpi: {
