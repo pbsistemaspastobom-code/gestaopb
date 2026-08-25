@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function Auth() {
@@ -25,24 +24,45 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-secondary/60 via-background to-background p-4">
-      <Card className="w-full max-w-md shadow-lg animate-fade-in">
-        <CardContent className="p-8">
-          <div className="mb-8 flex flex-col items-center text-center">
-            <img src="/logo.png" alt="Rede do Campo / Pasto Bom" className="mb-4 h-24 w-auto object-contain" />
-            <h1 className="font-display text-xl font-bold text-primary">Pasto Bom Gestão</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Acesso restrito</p>
+    <div className="grid min-h-screen lg:grid-cols-2">
+      {/* Painel lateral com a marca */}
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-primary via-primary-container to-secondary p-12 text-white lg:flex">
+        <div className="pointer-events-none absolute inset-0 opacity-10"
+          style={{ background: "radial-gradient(circle at 20% 30%, hsl(var(--gold)) 0, transparent 40%), radial-gradient(circle at 80% 70%, #fff 0, transparent 35%)" }} />
+        <img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="relative h-14 w-auto object-contain brightness-0 invert" />
+        <div className="relative">
+          <h2 className="font-display text-4xl font-extrabold leading-tight">Gestão de pessoas,<br />do campo à gestão.</h2>
+          <p className="mt-4 max-w-md text-white/70">Recrutamento, indicadores e resultados da Rede do Campo — Pasto Bom, tudo em um só lugar.</p>
+        </div>
+        <div className="relative flex items-center gap-2 text-sm text-white/50">
+          <span className="h-2 w-2 rounded-full bg-gold" /> Av. João Neto, 40 — JD Eldorado, Botelhos-MG
+        </div>
+      </div>
+
+      {/* Formulário */}
+      <div className="flex items-center justify-center bg-background p-6 sm:p-12">
+        <div className="w-full max-w-sm animate-fade-in">
+          <div className="mb-8 flex justify-center lg:hidden">
+            <img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="h-16 w-auto object-contain" />
           </div>
-          <div className="space-y-4">
-            <div className="space-y-2"><Label htmlFor="email">E-mail</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && entrar()} /></div>
-            <div className="space-y-2"><Label htmlFor="pw">Senha</Label>
-              <Input id="pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && entrar()} /></div>
-            <Button className="w-full" onClick={entrar} disabled={busy}>{busy ? "Entrando..." : "Entrar"}</Button>
+          <h1 className="font-display text-3xl font-extrabold text-primary">Entrar</h1>
+          <p className="mt-1 text-muted-foreground">Acesse o painel administrativo</p>
+          <div className="mt-8 space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">E-mail</Label>
+              <Input id="email" type="email" placeholder="seu@email.com" value={email}
+                onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && entrar()} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="pw">Senha</Label>
+              <Input id="pw" type="password" placeholder="••••••••" value={password}
+                onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && entrar()} />
+            </div>
+            <Button className="w-full" size="lg" onClick={entrar} disabled={busy}>{busy ? "Entrando..." : "Entrar"}</Button>
             <p className="text-center text-xs text-muted-foreground">Contas são criadas por um administrador.</p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
