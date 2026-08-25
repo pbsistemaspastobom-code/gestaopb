@@ -1,50 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
   :root {
-    --background: 30 25% 97%;
-    --foreground: 150 30% 12%;
+    /* Superfícies off-white quentes */
+    --background: 13 100% 98%;          /* #fff8f6 */
+    --foreground: 7 39% 12%;            /* #2b1613 wood brown */
 
     --card: 0 0% 100%;
-    --card-foreground: 150 30% 12%;
+    --card-foreground: 7 39% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 150 30% 12%;
+    --popover-foreground: 7 39% 12%;
 
-    /* Verde floresta #00421d */
-    --primary: 146 100% 13%;
+    /* Verde floresta */
+    --primary: 158 96% 9%;             /* #012d1d */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 146 30% 92%;
-    --secondary-foreground: 146 100% 13%;
+    /* Container escuro do cabeçalho de perspectiva */
+    --primary-container: 152 43% 18%;  /* #1b4332 */
+    --on-primary-container: 146 26% 61%;
 
-    --muted: 30 15% 92%;
-    --muted-foreground: 150 8% 42%;
+    /* Verde grama (secundária / sucesso) */
+    --secondary: 153 41% 29%;          /* #2c694e */
+    --secondary-foreground: 0 0% 100%;
 
-    /* Dourado de destaque */
-    --gold: 45 100% 45%;
-    --gold-foreground: 150 30% 12%;
-    --accent: 45 100% 45%;
-    --accent-foreground: 150 30% 12%;
+    --muted: 9 100% 96%;               /* #ffe9e5 */
+    --muted-foreground: 150 8% 40%;    /* #414844 */
 
-    --destructive: 0 72% 48%;
+    /* Dourado */
+    --gold: 43 66% 49%;                /* #cea02a */
+    --gold-foreground: 0 0% 100%;
+    --accent: 43 66% 49%;
+    --accent-foreground: 41 100% 8%;
+
+    --destructive: 0 75% 42%;          /* #ba1a1a */
     --destructive-foreground: 0 0% 100%;
 
-    /* Status KPI */
-    --kpi-ontarget: 145 63% 49%;   /* #2ecc71 */
-    --kpi-attention: 37 91% 55%;   /* #f5a623 */
-    --kpi-critical: 6 78% 57%;     /* #e74c3c */
-    --kpi-nodata: 150 6% 70%;
-
-    --border: 146 15% 86%;
-    --input: 146 15% 86%;
-    --ring: 146 100% 13%;
-    --radius: 0.7rem;
-  }
-}
-
-@layer base {
-  * { @apply border-border; }
-  body { @apply bg-background text-foreground font-sans antialiased; }
-}
+    /* Status KPI (do
