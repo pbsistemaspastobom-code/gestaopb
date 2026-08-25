@@ -1,10 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 
-// Credenciais do Supabase (a chave publishable/anon é pública por design — pode ficar no cliente).
-// Usa variáveis de ambiente se existirem; senão, cai nos valores fixos abaixo.
-const url = import.meta.env.VITE_SUPABASE_URL || "https://grgpmdtpteljwvrcxpsb.supabase.co";
-const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyZ3BtZHRwdGVsand2cmN4cHNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA4MTg2MzQsImV4cCI6MjA4NjM5NDYzNH0.Kbz5tEXRtw54dOk07DQ3QvA-Kvdh0hYLgOnjbtI3zlM";
+// Projeto Supabase oficial do sistema (gqyodqunriyfhwzytpji).
+// URL e chave anon (pública, feita pra ficar no cliente) fixas — sem depender
+// de variáveis de ambiente, pra garantir que sempre batem entre si.
+const url = "https://gqyodqunriyfhwzytpji.supabase.co";
+const key =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdxeW9kcXVucml5Zmh3enl0cGppIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyNTEyNzMsImV4cCI6MjEwMDgyNzI3M30.gLVD1rKyV9SAmXSk0J9PqOTq6lsDN4tx49UVEGVLXY4";
 
 export const supabase = createClient(url, key, {
   auth: { persistSession: true, autoRefreshToken: true, storageKey: "pb-gestao-auth" },
