@@ -1,39 +1,43 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
-    /* Superfícies off-white quentes */
-    --background: 13 100% 98%;          /* #fff8f6 */
-    --foreground: 7 39% 12%;            /* #2b1613 wood brown */
-
+    --background: 13 100% 98%;
+    --foreground: 7 39% 12%;
     --card: 0 0% 100%;
     --card-foreground: 7 39% 12%;
     --popover: 0 0% 100%;
     --popover-foreground: 7 39% 12%;
-
-    /* Verde floresta */
-    --primary: 158 96% 9%;             /* #012d1d */
+    --primary: 158 96% 9%;
     --primary-foreground: 0 0% 100%;
-
-    /* Container escuro do cabeçalho de perspectiva */
-    --primary-container: 152 43% 18%;  /* #1b4332 */
+    --primary-container: 152 43% 18%;
     --on-primary-container: 146 26% 61%;
-
-    /* Verde grama (secundária / sucesso) */
-    --secondary: 153 41% 29%;          /* #2c694e */
+    --secondary: 153 41% 29%;
     --secondary-foreground: 0 0% 100%;
-
-    --muted: 9 100% 96%;               /* #ffe9e5 */
-    --muted-foreground: 150 8% 40%;    /* #414844 */
-
-    /* Dourado */
-    --gold: 43 66% 49%;                /* #cea02a */
+    --muted: 9 100% 96%;
+    --muted-foreground: 150 8% 40%;
+    --gold: 43 66% 49%;
     --gold-foreground: 0 0% 100%;
     --accent: 43 66% 49%;
     --accent-foreground: 41 100% 8%;
-
-    --destructive: 0 75% 42%;          /* #ba1a1a */
+    --destructive: 0 75% 42%;
     --destructive-foreground: 0 0% 100%;
+    --kpi-ontarget: 153 41% 29%;
+    --kpi-attention: 43 66% 49%;
+    --kpi-critical: 0 75% 42%;
+    --kpi-nodata: 150 6% 70%;
+    --surface-low: 9 100% 97%;
+    --surface-container: 9 100% 96%;
+    --border: 131 8% 82%;
+    --input: 131 8% 78%;
+    --ring: 153 41% 29%;
+    --radius: 0.5rem;
+  }
+}
 
-    /* Status KPI (do
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground font-sans antialiased; }
+}
