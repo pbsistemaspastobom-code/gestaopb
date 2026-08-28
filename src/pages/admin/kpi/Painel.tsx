@@ -81,14 +81,14 @@ export default function Painel() {
 
   const MonthTable = ({ indsList }: { indsList: any[] }) => (
     <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full text-sm">
+      <table className="w-full text-[15px]">
         <thead>
           <tr className="bg-surface-low text-[11px] uppercase tracking-wide text-muted-foreground">
-            <th className="px-4 py-2 text-left font-semibold">Indicador</th>
+            <th className="sticky left-0 z-20 min-w-[220px] bg-surface-low px-4 py-2 text-left font-semibold shadow-[2px_0_4px_rgba(0,0,0,0.04)]">Indicador</th>
             {months.map((m) => <th key={m} colSpan={2} className="border-l border-border px-3 py-2 text-center font-semibold">{MESES[m - 1]}/{String(year).slice(2)}</th>)}
           </tr>
           <tr className="bg-surface-low/60 text-[10px] uppercase text-muted-foreground/70">
-            <th></th>
+            <th className="sticky left-0 z-20 bg-surface-low/60 shadow-[2px_0_4px_rgba(0,0,0,0.04)]"></th>
             {months.map((m) => (
               <Fragment key={m}>
                 <th className="border-l border-border px-3 py-1 font-medium">Meta</th>
@@ -100,7 +100,7 @@ export default function Painel() {
         <tbody>
           {indsList.map((i, idx) => (
             <tr key={i.id} className={cn("border-t border-border transition-colors hover:bg-surface-low/50", idx % 2 === 1 && "bg-surface-low/20")}>
-              <td className="px-4 py-3 font-medium">{i.name}{i.unit ? <span className="ml-1 text-[11px] text-muted-foreground/70">({i.unit})</span> : null}</td>
+              <td className="sticky left-0 z-10 min-w-[220px] bg-card px-4 py-3 font-medium shadow-[2px_0_4px_rgba(0,0,0,0.04)]">{i.name}{i.unit ? <span className="ml-1 text-[11px] text-muted-foreground/70">({i.unit})</span> : null}</td>
               {months.map((m) => {
                 const c = valMap[`${i.id}-${m}`] ?? { target: null, actual: null };
                 const s = statusFromPerf(performance(c.target, c.actual, i.direction));

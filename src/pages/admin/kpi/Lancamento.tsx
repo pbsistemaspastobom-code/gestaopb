@@ -11,7 +11,7 @@ import { MESES } from "@/lib/kpi";
 const YEARS = [new Date().getFullYear() - 1, new Date().getFullYear(), new Date().getFullYear() + 1];
 
 export default function Lancamento() {
-  const { isAdmin } = useAuth();
+  const { canEditMeta } = useAuth();
   const [year, setYear] = useState(new Date().getFullYear());
   const { perspectives, objectives, indicators, values, isLoading, isError } = useKpiData(year);
   const setTarget = useSetTarget();
@@ -40,23 +40,23 @@ export default function Lancamento() {
           <SelectTrigger className="w-[120px]"><SelectValue /></SelectTrigger>
           <SelectContent>{YEARS.map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}</SelectContent>
         </Select>
-        {!isAdmin && <Badge variant="muted">Você edita apenas o Realizado</Badge>}
+        {!canEditMeta && <Badge variant="muted">Você lança apenas o Realizado</Badge>}
       </div>
 
-      <Card><CardContent className="p-0">
+      <Card className="rounded-2xl shadow-sm"><CardContent className="p-0">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-[15px]">
             <thead>
-              <tr className="border-b">
-                <th className="sticky left-0 z-10 bg-card px-3 py-2 text-left font-semibold">Indicador</th>
-                {MESES.map((m) => <th key={m} colSpan={2} className="border-l px-2 py-2 text-center font-semibold">{m}</th>)}
+              <tr className="border-b bg-surface-low">
+                <th className="sticky left-0 z-20 min-w-[240px] bg-surface-low px-4 py-3 text-left font-bold shadow-[2px_0_4px_rgba(0,0,0,0.04)]">Indicador</th>
+                {MESES.map((m) => <th key={m} colSpan={2} className="border-l border-border px-3 py-3 text-center font-bold">{m}</th>)}
               </tr>
-              <tr className="border-b text-xs text-muted-foreground">
-                <th className="sticky left-0 z-10 bg-card px-3 py-1 text-left"></th>
+              <tr className="border-b bg-surface-low/60 text-xs uppercase text-muted-foreground">
+                <th className="sticky left-0 z-20 bg-surface-low/60 px-4 py-1.5 text-left shadow-[2px_0_4px_rgba(0,0,0,0.04)]"></th>
                 {MESES.map((m) => (
                   <Fragment key={m}>
-                    <th className="border-l px-2 py-1 font-medium">Meta</th>
-                    <th className="px-2 py-1 font-medium">Real</th>
+                    <th className="border-l border-border px-3 py-1.5 font-semibold">Meta</th>
+                    <th className="px-3 py-1.5 font-semibold">Real</th>
                   </Fragment>
                 ))}
               </tr>
@@ -66,25 +66,25 @@ export default function Lancamento() {
                 const pObjs = objs.filter((o) => o.perspective_id === p.id).sort((a, b) => a.ord - b.ord);
                 return (
                   <Fragment key={p.id}>
-                    <tr className="bg-secondary/40"><td colSpan={colCount} className="px-3 py-1.5 font-semibold text-primary">{p.name}</td></tr>
+                    <tr className="bg-primary-container/10"><td colSpan={colCount} className="sticky left-0 px-4 py-2 font-bold uppercase tracking-wide text-primary">{p.name}</td></tr>
                     {pObjs.map((o) => {
                       const oInds = inds.filter((i) => i.objective_id === o.id).sort((a, b) => a.ord - b.ord);
                       return (
                         <Fragment key={o.id}>
-                          <tr><td colSpan={colCount} className="px-3 py-1 pl-6 text-xs font-medium text-muted-foreground">{o.name}</td></tr>
+                          <tr><td colSpan={colCount} className="sticky left-0 px-4 py-1.5 pl-6 text-xs font-semibold uppercase tracking-wide text-secondary">{o.name}</td></tr>
                           {oInds.map((i) => (
-                            <tr key={i.id} className="border-b">
-                              <td className="sticky left-0 z-10 bg-card px-3 py-1 pl-8 font-medium">{i.name} <span className="text-xs text-muted-foreground">({i.unit})</span></td>
+                            <tr key={i.id} className="border-b transition-colors hover:bg-surface-low/40">
+                              <td className="sticky left-0 z-10 min-w-[240px] bg-card px-4 py-2 pl-8 font-medium shadow-[2px_0_4px_rgba(0,0,0,0.04)]">{i.name} <span className="text-xs text-muted-foreground">({i.unit})</span></td>
                               {MESES.map((_, mi) => {
                                 const month = mi + 1;
                                 const cell = valMap[`${i.id}-${month}`] ?? { target: null, actual: null };
                                 return (
                                   <Fragment key={month}>
-                                    <td className="border-l px-1 py-0.5 text-right">
-                                      <EditableNumber value={cell.target} unit={i.unit} disabled={!isAdmin}
+                                    <td className="border-l border-border px-1.5 py-1 text-right">
+                                      <EditableNumber value={cell.target} unit={i.unit} disabled={!canEditMeta}
                                         onCommit={(v) => setTarget.mutate({ indicator_id: i.id, year, month, target: v })} />
                                     </td>
-                                    <td className="px-1 py-0.5 text-right">
+                                    <td className="px-1.5 py-1 text-right">
                                       <EditableNumber value={cell.actual} unit={i.unit}
                                         onCommit={(v) => setActual.mutate({ indicator_id: i.id, year, month, actual: v })} />
                                     </td>
