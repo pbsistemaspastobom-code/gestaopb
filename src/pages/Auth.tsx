@@ -29,7 +29,7 @@ export default function Auth() {
       <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-primary via-primary-container to-secondary p-12 text-white lg:flex">
         <div className="pointer-events-none absolute inset-0 opacity-10"
           style={{ background: "radial-gradient(circle at 20% 30%, hsl(var(--gold)) 0, transparent 40%), radial-gradient(circle at 80% 70%, #fff 0, transparent 35%)" }} />
-        <img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="relative h-14 w-auto object-contain brightness-0 invert" />
+        <div className="relative inline-flex w-fit rounded-2xl bg-white px-5 py-3 shadow-lg"><img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="h-12 w-auto object-contain" /></div>
         <div className="relative">
           <h2 className="font-display text-4xl font-extrabold leading-tight">Gestão de pessoas,<br />do campo à gestão.</h2>
           <p className="mt-4 max-w-md text-white/70">Recrutamento, indicadores e resultados da Rede do Campo — Pasto Bom, tudo em um só lugar.</p>
