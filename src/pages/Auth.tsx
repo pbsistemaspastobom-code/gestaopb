@@ -7,12 +7,12 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function Auth() {
-  const { user, loading, roleLoading, isAdmin, signIn } = useAuth();
+  const { user, loading, roleLoading, hasAccess, signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
-  if (!loading && !roleLoading && user) return <Navigate to={isAdmin ? "/admin" : "/kpis"} replace />;
+  if (!loading && !roleLoading && user) return <Navigate to={hasAccess ? "/admin" : "/auth"} replace />;
 
   const entrar = async () => {
     if (!email || !password) { toast.error("Preencha e-mail e senha."); return; }
