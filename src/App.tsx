@@ -8,7 +8,6 @@ import { LoadingState } from "@/components/DataState";
 
 const Auth = lazy(() => import("@/pages/Auth"));
 const Admin = lazy(() => import("@/pages/Admin"));
-const Kpis = lazy(() => import("@/pages/Kpis"));
 const Vagas = lazy(() => import("@/pages/public/Vagas"));
 const VagaDetalhe = lazy(() => import("@/pages/public/VagaDetalhe"));
 const EmConstrucao = lazy(() => import("@/pages/public/EmConstrucao"));
@@ -32,7 +31,6 @@ export default function App() {
               <Route path="/avaliacao/:token" element={<EmConstrucao titulo="Avaliação de Desempenho" />} />
               {/* Protegido */}
               <Route path="/admin" element={<ProtectedRoute requireAdmin><Admin /></ProtectedRoute>} />
-              <Route path="/kpis" element={<ProtectedRoute><Kpis /></ProtectedRoute>} />
               <Route path="*" element={<Navigate to="/auth" replace />} />
             </Routes>
           </Suspense>
