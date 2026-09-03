@@ -1,6 +1,5 @@
-import { Briefcase, BarChart3, Settings, LogOut, UserPlus, Users } from "lucide-react";
+import { Briefcase, BarChart3, Settings, LogOut, UserPlus, Users, Menu, X } from "lucide-react";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator,
@@ -26,8 +25,10 @@ export function Sidebar({
   ];
 
   const content = (
-    <aside className="flex h-full w-[264px] flex-col justify-between border-r border-border bg-card py-6 shadow-sm">
-      <div>
+    // h-screen fixo + flex-col: o topo rola se precisar, o rodapé (usuário/Sair) fica sempre visível
+    <aside className="flex h-screen w-[264px] flex-col border-r border-border bg-card shadow-sm">
+      {/* topo: logo + navegação — rola se a lista crescer */}
+      <div className="flex-1 overflow-y-auto py-6">
         <div className="mb-8 flex items-center gap-3 px-6">
           <img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="h-11 w-auto max-w-[190px] object-contain" />
         </div>
@@ -45,8 +46,8 @@ export function Sidebar({
         </nav>
       </div>
 
-      <div className="space-y-1 px-4">
-        {/* Configurações — só admin (criar/gerenciar usuários) */}
+      {/* rodapé fixo: nunca sai da tela */}
+      <div className="shrink-0 space-y-1 border-t border-border bg-card px-4 py-4">
         {canManageUsers && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -54,7 +55,7 @@ export function Sidebar({
                 <Settings className="h-5 w-5" /> <span>Configurações</span>
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-56">
+            <DropdownMenuContent align="start" side="top" className="w-56">
               <DropdownMenuLabel>Gestão de usuários</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={onCriarConta}><UserPlus className="h-4 w-4" /> Criar usuário</DropdownMenuItem>
@@ -63,8 +64,7 @@ export function Sidebar({
           </DropdownMenu>
         )}
 
-        {/* Usuário + Sair (sempre visível) */}
-        <div className="mt-2 rounded-xl border border-border bg-surface-low/50 p-3">
+        <div className="rounded-xl border border-border bg-surface-low/50 p-3">
           <div className="truncate text-xs font-semibold text-foreground">{user?.email}</div>
           <div className="text-[11px] text-muted-foreground">{role ? ROLE_LABEL[role] : "Sem perfil"}</div>
           <button onClick={signOut}
