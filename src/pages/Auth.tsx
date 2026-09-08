@@ -31,7 +31,7 @@ export default function Auth() {
           <div className="mb-4 rounded-2xl bg-white px-5 py-3 shadow-lg">
             <img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="h-12 w-auto object-contain" />
           </div>
-          <h1 className="font-display text-2xl font-extrabold">Pasto Bom Gestão</h1>
+          <h1 className="font-display text-2xl font-extrabold">PB Gestão</h1>
           <p className="mt-1 text-sm text-white/70">Rede do Campo — Recrutamento &amp; Indicadores</p>
         </div>
 
