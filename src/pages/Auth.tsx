@@ -31,8 +31,8 @@ export default function Auth() {
           <div className="mb-4 rounded-2xl bg-white px-5 py-3 shadow-lg">
             <img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="h-12 w-auto object-contain" />
           </div>
-          <h1 className="font-display text-[28px] font-extrabold leading-tight text-white">Gestão</h1>
-          <p className="mt-1 text-sm" style={{ color: "#9FAE9B" }}>Pasto Bom · Rede do Campo</p>
+          <h1 className="font-display text-[21px] font-extrabold leading-tight text-white">Gestão</h1>
+          <p className="mt-1 text-[13px]" style={{ color: "#9FAE9B" }}>Pasto Bom · Rede do Campo</p>
         </div>
 
         {/* Formulário */}
