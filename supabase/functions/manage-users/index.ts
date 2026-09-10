@@ -75,6 +75,14 @@ Deno.serve(async (req) => {
       return json({ ok: true });
     }
 
+    if (action === "setPassword") {
+      const { userId, password } = body;
+      if (!password || String(password).length < 6) return json({ error: "A senha precisa ter ao menos 6 caracteres." }, 400);
+      const { error } = await admin.auth.admin.updateUserById(userId, { password });
+      if (error) return json({ error: error.message }, 400);
+      return json({ ok: true });
+    }
+
     if (action === "passwordLink") {
       const { email } = body;
       const { data: linkData, error } = await admin.auth.admin.generateLink({ type: "recovery", email, options: { redirectTo } });
