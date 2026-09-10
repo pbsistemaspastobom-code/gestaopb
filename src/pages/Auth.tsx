@@ -24,16 +24,15 @@ export default function Auth() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-surface-low p-4">
+    <div className="flex min-h-screen items-center justify-center p-4" style={{ background: "#EEF2E9" }}>
       <div className="w-full max-w-sm overflow-hidden rounded-3xl bg-card shadow-xl">
-        {/* Topo verde com a marca */}
-        <div className="flex flex-col items-center px-8 pb-8 pt-10 text-center text-white"
-          style={{ background: "linear-gradient(160deg, #0F2E1E, #1C4416)" }}>
+        {/* Topo verde sólido (sem degradê) */}
+        <div className="flex flex-col items-center px-8 pb-8 pt-10 text-center" style={{ background: "#0F2E1E" }}>
           <div className="mb-4 rounded-2xl bg-white px-5 py-3 shadow-lg">
             <img src="/logo.png" alt="Rede do Campo — Pasto Bom" className="h-12 w-auto object-contain" />
           </div>
-          <h1 className="font-display text-[28px] font-extrabold leading-tight">Gestão</h1>
-          <p className="mt-1 text-sm text-white/70">Pasto Bom · Rede do Campo</p>
+          <h1 className="font-display text-[28px] font-extrabold leading-tight text-white">Gestão</h1>
+          <p className="mt-1 text-sm" style={{ color: "#9FAE9B" }}>Pasto Bom · Rede do Campo</p>
         </div>
 
         {/* Formulário */}
@@ -42,13 +41,13 @@ export default function Auth() {
             <Label htmlFor="email" className="text-xs font-bold uppercase tracking-wide text-muted-foreground">E-mail</Label>
             <Input id="email" type="email" placeholder="seu@email.com" value={email}
               onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => e.key === "Enter" && entrar()}
-              className="h-12 border-border text-[15px]" style={{ background: "#EEF2FB" }} />
+              className="h-12 text-[15px]" style={{ background: "#E8F0FE", borderColor: "#C0D2BE" }} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="pw" className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Senha</Label>
             <Input id="pw" type="password" placeholder="••••••••" value={password}
               onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && entrar()}
-              className="h-12 border-border text-[15px]" style={{ background: "#EEF2FB" }} />
+              className="h-12 text-[15px]" style={{ background: "#E8F0FE", borderColor: "#C0D2BE" }} />
           </div>
           <Button className="h-12 w-full text-base" onClick={entrar} disabled={busy}>{busy ? "Entrando..." : "Entrar"}</Button>
         </div>
