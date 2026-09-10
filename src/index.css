@@ -4,40 +4,67 @@
 
 @layer base {
   :root {
-    --background: 13 100% 98%;
-    --foreground: 7 39% 12%;
+    /* Fundo e texto */
+    --background: 210 17% 98%;
+    --foreground: 120 14% 16%;
     --card: 0 0% 100%;
-    --card-foreground: 7 39% 12%;
+    --card-foreground: 120 14% 16%;
     --popover: 0 0% 100%;
-    --popover-foreground: 7 39% 12%;
-    --primary: 158 96% 9%;
+    --popover-foreground: 120 14% 16%;
+
+    /* Verde primária — botões, links, marca */
+    --primary: 115 46% 28%;
     --primary-foreground: 0 0% 100%;
-    --primary-container: 152 43% 18%;
-    --on-primary-container: 146 26% 61%;
-    --secondary: 153 41% 29%;
+
+    /* Verde escuro — títulos, números fortes, gradientes/headers */
+    --primary-container: 112 51% 18%;
+    --on-primary-container: 129 53% 90%;
+
+    /* Verde médio — destaques secundários / KPI no alvo */
+    --secondary: 111 46% 34%;
     --secondary-foreground: 0 0% 100%;
-    --muted: 9 100% 96%;
-    --muted-foreground: 150 8% 40%;
-    --gold: 43 66% 49%;
+
+    /* Verde suave — item ativo do menu, fundo de ícones */
+    --accent: 129 53% 90%;
+    --accent-foreground: 112 51% 18%;
+
+    /* Neutros */
+    --muted: 100 23% 95%;
+    --muted-foreground: 106 6% 43%;
+
+    /* Ouro — status Atenção */
+    --gold: 48 100% 30%;
     --gold-foreground: 0 0% 100%;
-    --accent: 43 66% 49%;
-    --accent-foreground: 41 100% 8%;
+
+    /* Vermelho — mantido como já estava (Crítico / Sair) */
     --destructive: 0 75% 42%;
     --destructive-foreground: 0 0% 100%;
-    --kpi-ontarget: 153 41% 29%;
-    --kpi-attention: 43 66% 49%;
+
+    /* Status KPI */
+    --kpi-ontarget: 111 46% 34%;
+    --kpi-attention: 48 100% 30%;
     --kpi-critical: 0 75% 42%;
     --kpi-nodata: 150 6% 70%;
-    --surface-low: 9 100% 97%;
-    --surface-container: 9 100% 96%;
-    --border: 131 8% 82%;
-    --input: 131 8% 78%;
-    --ring: 153 41% 29%;
-    --radius: 0.5rem;
+
+    /* Superfícies */
+    --surface-low: 100 23% 95%;
+    --surface-container: 210 16% 93%;
+
+    --border: 93 16% 89%;
+    --input: 93 16% 89%;
+    --ring: 115 46% 28%;
+    --radius: 0.75rem;
   }
 }
 
 @layer base {
   * { @apply border-border; }
   body { @apply bg-background text-foreground font-sans antialiased; }
+}
+
+/* Sombra suave e esverdeada, conforme guia visual da marca */
+@layer utilities {
+  .shadow-sm, .shadow, .shadow-md, .shadow-lg, .shadow-xl {
+    box-shadow: 0 4px 20px rgba(45, 106, 39, 0.08);
+  }
 }

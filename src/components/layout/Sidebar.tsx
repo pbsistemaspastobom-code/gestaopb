@@ -38,7 +38,7 @@ export function Sidebar({
             return (
               <button key={it.key} onClick={() => { onSelect(it.key); setOpenMobile(false); }}
                 className={cn("flex items-center gap-3 rounded-xl px-4 py-3 text-left transition-colors",
-                  on ? "bg-primary-container text-primary-container-foreground font-semibold" : "text-muted-foreground hover:bg-surface-low font-medium")}>
+                  on ? "bg-accent text-accent-foreground font-semibold" : "text-muted-foreground hover:bg-surface-low font-medium")}>
                 <it.icon className="h-5 w-5" /><span>{it.label}</span>
               </button>
             );

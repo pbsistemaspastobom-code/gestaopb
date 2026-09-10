@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Plus, Pencil, Download, Briefcase } from "lucide-react";
+import { Plus, Pencil, Download } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,22 +26,67 @@ function Vagas() {
   const save = useSaveJob(); const del = useDeleteJob();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<Partial<Job>>(emptyJob);
+  const [filtro, setFiltro] = useState<"todas" | "ativas" | "inativas">("todas");
+  const [busca, setBusca] = useState("");
 
   const salvar = async () => { if (!form.title?.trim()) return; await save.mutateAsync(form); setOpen(false); };
+
+  const todas = data ?? [];
+  const ativas = todas.filter((j) => j.active);
+  const inativas = todas.filter((j) => !j.active);
+  const listados = todas
+    .filter((j) => filtro === "todas" || (filtro === "ativas" ? j.active : !j.active))
+    .filter((j) => !busca.trim() || j.title.toLowerCase().includes(busca.toLowerCase()) || (j.location ?? "").toLowerCase().includes(busca.toLowerCase()));
 
   return (
     <>
     <DivulgacaoVagas />
-    <Card><CardContent className="p-4">
-      <div className="mb-4 flex items-center justify-between gap-2">
-        <span className="text-sm text-muted-foreground">Vagas cadastradas</span>
+
+    {/* Cards de resumo */}
+    <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Total</div>
+        <div className="mt-1 font-display text-3xl font-extrabold text-primary-container">{todas.length}</div>
+      </div>
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Ativas</div>
+        <div className="mt-1 font-display text-3xl font-extrabold" style={{ color: "hsl(var(--kpi-ontarget))" }}>{ativas.length}</div>
+      </div>
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <div className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Inativas</div>
+        <div className="mt-1 font-display text-3xl font-extrabold text-muted-foreground">{inativas.length}</div>
+      </div>
+    </div>
+
+    <Card className="rounded-2xl"><CardContent className="p-4">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <h3 className="font-display text-lg font-bold text-primary-container">Vagas cadastradas</h3>
         <Button onClick={() => { setForm(emptyJob); setOpen(true); }}><Plus className="h-4 w-4" /> Nova vaga</Button>
       </div>
+
+      {/* Busca + filtros em pill */}
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <Input placeholder="Buscar por vaga ou local..." value={busca} onChange={(e) => setBusca(e.target.value)} className="max-w-xs" />
+        {[
+          { key: "todas" as const, label: "Todas" },
+          { key: "ativas" as const, label: "Ativas" },
+          { key: "inativas" as const, label: "Inativas" },
+        ].map((f) => (
+          <button key={f.key} onClick={() => setFiltro(f.key)}
+            className={cn(
+              "rounded-full px-4 py-1.5 text-sm font-semibold transition-colors",
+              filtro === f.key ? "bg-primary-container text-white" : "border border-border bg-card text-muted-foreground hover:bg-surface-low"
+            )}>
+            {f.label}
+          </button>
+        ))}
+      </div>
+
       {isLoading ? <LoadingState /> : isError ? <ErrorState /> : (
         <Table>
           <TableHeader><TableRow><TableHead>Vaga</TableHead><TableHead>Área</TableHead><TableHead>Local</TableHead><TableHead>Situação</TableHead><TableHead className="text-right">Ações</TableHead></TableRow></TableHeader>
           <TableBody>
-            {(data ?? []).map((j) => (
+            {listados.map((j) => (
               <TableRow key={j.id}>
                 <TableCell className="font-medium">{j.title}</TableCell>
                 <TableCell className="text-muted-foreground">{j.role_function || "—"}</TableCell>
@@ -56,7 +102,7 @@ function Vagas() {
           </TableBody>
         </Table>
       )}
-      {!isLoading && !isError && (data ?? []).length === 0 && <EmptyState text="Nenhuma vaga cadastrada." />}
+      {!isLoading && !isError && listados.length === 0 && <EmptyState text="Nenhuma vaga encontrada." />}
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-2xl">
@@ -116,7 +162,10 @@ function Candidaturas() {
 export default function Recrutamento() {
   return (
     <div>
-      <div className="mb-4 flex items-center gap-2"><Briefcase className="h-5 w-5 text-primary" /><h2 className="font-display text-xl font-bold">Recrutamento</h2></div>
+      <div className="mb-4">
+        <h2 className="font-display text-2xl font-extrabold text-primary-container">Recrutamento</h2>
+        <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Vagas e candidaturas</p>
+      </div>
       <Tabs defaultValue="vagas">
         <TabsList><TabsTrigger value="vagas">Vagas</TabsTrigger><TabsTrigger value="candidaturas">Candidaturas</TabsTrigger></TabsList>
         <TabsContent value="vagas"><Vagas /></TabsContent>

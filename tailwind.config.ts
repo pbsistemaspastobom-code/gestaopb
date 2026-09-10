@@ -7,8 +7,8 @@ export default {
     container: { center: true, padding: "2rem", screens: { "2xl": "1400px" } },
     extend: {
       fontFamily: {
-        sans: ["Hanken Grotesk", "system-ui", "sans-serif"],
-        display: ["Hanken Grotesk", "sans-serif"],
+        sans: ["Work Sans", "system-ui", "sans-serif"],
+        display: ["Manrope", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
