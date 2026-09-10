@@ -12,10 +12,10 @@ import { LoadingState } from "@/components/DataState";
 
 const ROLES = [
   { value: "admin", label: "Administrador" },
-  { value: "gerente", label: "Gerente" },
+  { value: "gerente", label: "Gestor" },
   { value: "supervisao", label: "Supervisão" },
 ];
-const ROLE_LABEL: Record<string, string> = { admin: "Administrador", gerente: "Gerente", supervisao: "Supervisão" };
+const ROLE_LABEL: Record<string, string> = { admin: "Administrador", gerente: "Gestor", supervisao: "Supervisão" };
 
 async function callManageUsers(action: string, payload: any = {}) {
   const { data, error } = await supabase.functions.invoke("manage-users", { body: { action, ...payload } });
@@ -25,7 +25,7 @@ async function callManageUsers(action: string, payload: any = {}) {
 }
 
 export function CriarContaDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
-  const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [role, setRole] = useState("supervisao"); const [busy, setBusy] = useState(false);
+  const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [role, setRole] = useState("gerente"); const [busy, setBusy] = useState(false);
   const [link, setLink] = useState<string | null>(null);
 
   const criar = async () => {
@@ -83,6 +83,9 @@ export function CriarContaDialog({ open, onOpenChange }: { open: boolean; onOpen
 
 export function UsuariosDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
   const [users, setUsers] = useState<any[]>([]); const [loading, setLoading] = useState(false);
+  const [trocaUser, setTrocaUser] = useState<any | null>(null);
+  const [novaSenha, setNovaSenha] = useState("");
+  const [salvandoSenha, setSalvandoSenha] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -104,6 +107,14 @@ export function UsuariosDialog({ open, onOpenChange }: { open: boolean; onOpenCh
     try { const d: any = await callManageUsers("passwordLink", { userId: u.id, email: u.email }); if (d?.link) { navigator.clipboard.writeText(d.link); toast.success("Link de senha copiado! Envie para o usuário."); } }
     catch (e: any) { toast.error(e?.message ?? "Erro."); }
   };
+  const salvarNovaSenha = async () => {
+    if (!trocaUser) return;
+    if (novaSenha.length < 6) { toast.error("A senha precisa ter ao menos 6 caracteres."); return; }
+    setSalvandoSenha(true);
+    try { await callManageUsers("setPassword", { userId: trocaUser.id, password: novaSenha }); toast.success("Senha alterada com sucesso."); setTrocaUser(null); setNovaSenha(""); }
+    catch (e: any) { toast.error(e?.message ?? "Erro."); }
+    finally { setSalvandoSenha(false); }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -123,7 +134,8 @@ export function UsuariosDialog({ open, onOpenChange }: { open: boolean; onOpenCh
                     <SelectTrigger className="h-8 w-[150px] text-xs"><SelectValue /></SelectTrigger>
                     <SelectContent>{ROLES.map((r) => <SelectItem key={r.value} value={r.value}>{r.label}</SelectItem>)}</SelectContent>
                   </Select>
-                  <Button variant="outline" size="sm" onClick={() => senhaLink(u)} title="Gerar link de senha"><KeyRound className="h-4 w-4" /></Button>
+                  <Button variant="outline" size="sm" onClick={() => { setTrocaUser(u); setNovaSenha(""); }} title="Trocar senha"><KeyRound className="h-4 w-4" /> Trocar senha</Button>
+                  <Button variant="outline" size="sm" onClick={() => senhaLink(u)} title="Gerar link para o usuário criar a própria senha"><Copy className="h-4 w-4" /> Link de senha</Button>
                   <Button variant={u.active ? "outline" : "default"} size="sm" onClick={() => toggleActive(u)} title={u.active ? "Inativar" : "Ativar"}>
                     <Power className="h-4 w-4" /> {u.active ? "Inativar" : "Ativar"}
                   </Button>
@@ -133,6 +145,23 @@ export function UsuariosDialog({ open, onOpenChange }: { open: boolean; onOpenCh
           </div>
         )}
       </DialogContent>
+
+      {/* Trocar senha diretamente */}
+      <Dialog open={!!trocaUser} onOpenChange={(v) => { if (!v) { setTrocaUser(null); setNovaSenha(""); } }}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Trocar senha</DialogTitle></DialogHeader>
+          <p className="text-sm text-muted-foreground">Defina uma nova senha para <strong>{trocaUser?.email}</strong>.</p>
+          <div className="space-y-2">
+            <Label>Nova senha</Label>
+            <Input type="text" placeholder="Mínimo 6 caracteres" value={novaSenha} onChange={(e) => setNovaSenha(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && salvarNovaSenha()} />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setTrocaUser(null); setNovaSenha(""); }}>Cancelar</Button>
+            <Button onClick={salvarNovaSenha} disabled={salvandoSenha}>{salvandoSenha ? "Salvando..." : "Salvar senha"}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   );
 }
