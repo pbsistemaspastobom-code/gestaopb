@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 
 export type ModuleKey = "recrutamento" | "indicadores";
 
-const ROLE_LABEL: Record<string, string> = { admin: "Administrador", gerente: "Gerente", supervisao: "Supervisão" };
+const ROLE_LABEL: Record<string, string> = { admin: "Administrador", gerente: "Gestor", supervisao: "Supervisão" };
 
 export function Sidebar({
   active, onSelect, onCriarConta, onUsuarios,
