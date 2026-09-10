@@ -70,8 +70,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider value={{
       user, session, role, isAdmin, isGerente, isSupervisao,
       canManageUsers: isAdmin,
-      canEditMeta: isAdmin || isGerente,
-      canConfig: isAdmin || isGerente,
+      canEditMeta: isAdmin,
+      canConfig: isAdmin,
       hasAccess: !!role,
       loading, roleLoading, signIn, signOut,
     }}>
