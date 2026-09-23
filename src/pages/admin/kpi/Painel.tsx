@@ -100,7 +100,10 @@ export default function Painel() {
         <tbody>
           {indsList.map((i, idx) => (
             <tr key={i.id} className={cn("border-t border-border transition-colors hover:bg-surface-low/50", idx % 2 === 1 && "bg-surface-low/20")}>
-              <td className="sticky left-0 z-10 min-w-[220px] bg-card px-4 py-3 font-medium shadow-[2px_0_4px_rgba(0,0,0,0.04)]">{i.name}{i.unit ? <span className="ml-1 text-[11px] text-muted-foreground/70">({i.unit})</span> : null}</td>
+              <td className="sticky left-0 z-10 min-w-[220px] bg-card px-4 py-3 font-medium shadow-[2px_0_4px_rgba(0,0,0,0.04)]">
+                {i.name}{i.unit ? <span className="ml-1 text-[11px] text-muted-foreground/70">({i.unit})</span> : null}
+                {i.responsible ? <div className="text-[11px] font-normal text-muted-foreground">{i.responsible}</div> : null}
+              </td>
               {months.map((m) => {
                 const c = valMap[`${i.id}-${m}`] ?? { target: null, actual: null };
                 const s = statusFromPerf(performance(c.target, c.actual, i.direction));
