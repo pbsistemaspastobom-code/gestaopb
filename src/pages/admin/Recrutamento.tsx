@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Pencil, Download } from "lucide-react";
+import { Plus, Pencil, Download, Users, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -21,8 +21,9 @@ import type { Job } from "@/lib/types";
 const emptyJob: Partial<Job> = { title: "", description: "", role_function: "", requirements: "", compensation: "", location: "", type: "", active: true };
 const fmt = (d: string) => new Date(d).toLocaleDateString("pt-BR");
 
-function Vagas() {
+function Vagas({ onVerCandidatos }: { onVerCandidatos: (jobId: string, jobTitle: string) => void }) {
   const { data, isLoading, isError } = useJobs(false);
+  const { data: apps } = useApplications();
   const save = useSaveJob(); const del = useDeleteJob();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<Partial<Job>>(emptyJob);
@@ -37,6 +38,8 @@ function Vagas() {
   const listados = todas
     .filter((j) => filtro === "todas" || (filtro === "ativas" ? j.active : !j.active))
     .filter((j) => !busca.trim() || j.title.toLowerCase().includes(busca.toLowerCase()) || (j.location ?? "").toLowerCase().includes(busca.toLowerCase()));
+
+  const contarCandidatos = (jobId: string) => (apps ?? []).filter((a) => a.job_id === jobId).length;
 
   return (
     <>
@@ -86,19 +89,31 @@ function Vagas() {
         <Table>
           <TableHeader><TableRow><TableHead>Vaga</TableHead><TableHead>Área</TableHead><TableHead>Local</TableHead><TableHead>Situação</TableHead><TableHead className="text-right">Ações</TableHead></TableRow></TableHeader>
           <TableBody>
-            {listados.map((j) => (
-              <TableRow key={j.id}>
-                <TableCell className="font-medium">{j.title}</TableCell>
-                <TableCell className="text-muted-foreground">{j.role_function || "—"}</TableCell>
-                <TableCell className="text-muted-foreground">{j.location || "—"}</TableCell>
-                <TableCell><Badge variant={j.active ? "ontarget" : "muted"}>{j.active ? "Ativa" : "Inativa"}</Badge></TableCell>
-                <TableCell className="text-right"><div className="flex justify-end gap-1">
-                  <CopiarLinkVaga jobId={j.id} />
-                  <Button variant="ghost" size="icon" onClick={() => { setForm(j); setOpen(true); }}><Pencil className="h-4 w-4" /></Button>
-                  <ConfirmDelete label={j.title} onConfirm={() => del.mutate(j.id)} />
-                </div></TableCell>
-              </TableRow>
-            ))}
+            {listados.map((j) => {
+              const n = contarCandidatos(j.id);
+              return (
+                <TableRow key={j.id}>
+                  <TableCell className="font-medium">{j.title}</TableCell>
+                  <TableCell className="text-muted-foreground">{j.role_function || "—"}</TableCell>
+                  <TableCell className="text-muted-foreground">{j.location || "—"}</TableCell>
+                  <TableCell><Badge variant={j.active ? "ontarget" : "muted"}>{j.active ? "Ativa" : "Inativa"}</Badge></TableCell>
+                  <TableCell className="text-right"><div className="flex justify-end gap-1">
+                    <Button variant="ghost" size="icon" className="relative" title={`${n} candidato${n !== 1 ? "s" : ""} — ver candidaturas desta vaga`}
+                      onClick={() => onVerCandidatos(j.id, j.title)}>
+                      <Users className="h-4 w-4" />
+                      {n > 0 && (
+                        <span className="absolute -right-1 -top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[10px] font-bold text-white" style={{ background: "#2D6A27" }}>
+                          {n}
+                        </span>
+                      )}
+                    </Button>
+                    <CopiarLinkVaga jobId={j.id} />
+                    <Button variant="ghost" size="icon" onClick={() => { setForm(j); setOpen(true); }}><Pencil className="h-4 w-4" /></Button>
+                    <ConfirmDelete label={j.title} onConfirm={() => del.mutate(j.id)} />
+                  </div></TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       )}
@@ -130,14 +145,24 @@ function Vagas() {
   );
 }
 
-function Candidaturas() {
+function Candidaturas({ filtroJobId, filtroJobTitle, onLimparFiltro }: { filtroJobId: string | null; filtroJobTitle: string | null; onLimparFiltro: () => void }) {
   const { data, isLoading, isError } = useApplications();
   const upd = useUpdateApplicationStatus();
+  const lista = (data ?? []).filter((a) => !filtroJobId || a.job_id === filtroJobId);
+
   return (
     <Card><CardContent className="p-4">
-      {isLoading ? <LoadingState /> : isError ? <ErrorState /> : (data ?? []).length === 0 ? <EmptyState text="Nenhuma candidatura recebida." /> : (
+      {filtroJobId && (
+        <div className="mb-4 flex items-center gap-2 rounded-full bg-surface-low px-4 py-2 text-sm font-semibold text-primary-container w-fit">
+          <Users className="h-4 w-4" /> Vaga: {filtroJobTitle}
+          <button onClick={onLimparFiltro} className="ml-1 rounded-full p-0.5 hover:bg-black/5" title="Limpar filtro"><X className="h-3.5 w-3.5" /></button>
+        </div>
+      )}
+      {isLoading ? <LoadingState /> : isError ? <ErrorState /> : lista.length === 0 ? (
+        <EmptyState text={filtroJobId ? "Nenhuma candidatura recebida para esta vaga." : "Nenhuma candidatura recebida."} />
+      ) : (
         <div className="grid gap-3">
-          {(data ?? []).map((a) => (
+          {lista.map((a) => (
             <div key={a.id} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-4">
               <div className="min-w-[200px]">
                 <div className="flex items-center gap-2"><span className="font-medium">{a.name}</span><Badge variant={APPLICATION_STATUS[a.status].variant}>{APPLICATION_STATUS[a.status].label}</Badge></div>
@@ -160,16 +185,25 @@ function Candidaturas() {
 }
 
 export default function Recrutamento() {
+  const [aba, setAba] = useState("vagas");
+  const [filtroJobId, setFiltroJobId] = useState<string | null>(null);
+  const [filtroJobTitle, setFiltroJobTitle] = useState<string | null>(null);
+
+  const abrirCandidatosDaVaga = (jobId: string, jobTitle: string) => {
+    setFiltroJobId(jobId); setFiltroJobTitle(jobTitle); setAba("candidaturas");
+  };
+  const limparFiltro = () => { setFiltroJobId(null); setFiltroJobTitle(null); };
+
   return (
     <div>
       <div className="mb-4">
         <h2 className="font-display text-2xl font-extrabold text-primary-container">Recrutamento</h2>
         <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Vagas e candidaturas</p>
       </div>
-      <Tabs defaultValue="vagas">
+      <Tabs value={aba} onValueChange={(v) => { setAba(v); if (v === "vagas") limparFiltro(); }}>
         <TabsList><TabsTrigger value="vagas">Vagas</TabsTrigger><TabsTrigger value="candidaturas">Candidaturas</TabsTrigger></TabsList>
-        <TabsContent value="vagas"><Vagas /></TabsContent>
-        <TabsContent value="candidaturas"><Candidaturas /></TabsContent>
+        <TabsContent value="vagas"><Vagas onVerCandidatos={abrirCandidatosDaVaga} /></TabsContent>
+        <TabsContent value="candidaturas"><Candidaturas filtroJobId={filtroJobId} filtroJobTitle={filtroJobTitle} onLimparFiltro={limparFiltro} /></TabsContent>
       </Tabs>
     </div>
   );
