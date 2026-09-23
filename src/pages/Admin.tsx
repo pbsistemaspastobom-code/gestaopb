@@ -18,7 +18,7 @@ export default function Admin() {
         onUsuarios={() => setUsuarios(true)}
       />
       <main className="flex-1 overflow-y-auto overflow-x-hidden px-5 py-8 md:px-10 lg:px-12 animate-fade-in">
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto max-w-7xl">
           {active === "recrutamento" && <Recrutamento />}
           {active === "indicadores" && <Indicadores />}
         </div>
