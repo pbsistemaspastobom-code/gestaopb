@@ -74,7 +74,10 @@ export default function Lancamento() {
                           <tr><td colSpan={colCount} className="sticky left-0 px-4 py-1.5 pl-6 text-xs font-semibold uppercase tracking-wide text-secondary">{o.name}</td></tr>
                           {oInds.map((i) => (
                             <tr key={i.id} className="border-b transition-colors hover:bg-surface-low/40">
-                              <td className="sticky left-0 z-10 min-w-[240px] bg-card px-4 py-2 pl-8 font-medium shadow-[2px_0_4px_rgba(0,0,0,0.04)]">{i.name} <span className="text-xs text-muted-foreground">({i.unit})</span></td>
+                              <td className="sticky left-0 z-10 min-w-[240px] bg-card px-4 py-2 pl-8 font-medium shadow-[2px_0_4px_rgba(0,0,0,0.04)]">
+                                {i.name} <span className="text-xs text-muted-foreground">({i.unit})</span>
+                                {i.responsible ? <div className="text-[11px] font-normal text-muted-foreground">{i.responsible}</div> : null}
+                              </td>
                               {MESES.map((_, mi) => {
                                 const month = mi + 1;
                                 const cell = valMap[`${i.id}-${month}`] ?? { target: null, actual: null };
