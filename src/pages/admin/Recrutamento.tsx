@@ -86,8 +86,14 @@ function Vagas({ onVerCandidatos }: { onVerCandidatos: (jobId: string, jobTitle:
       </div>
 
       {isLoading ? <LoadingState /> : isError ? <ErrorState /> : (
-        <Table>
-          <TableHeader><TableRow><TableHead>Vaga</TableHead><TableHead>Área</TableHead><TableHead>Local</TableHead><TableHead>Situação</TableHead><TableHead className="text-right">Ações</TableHead></TableRow></TableHeader>
+        <Table className="table-fixed">
+          <TableHeader><TableRow>
+            <TableHead className="w-[30%]">Vaga</TableHead>
+            <TableHead className="w-[24%]">Área</TableHead>
+            <TableHead className="w-[18%]">Local</TableHead>
+            <TableHead className="w-[13%]">Situação</TableHead>
+            <TableHead className="w-[15%] text-right">Ações</TableHead>
+          </TableRow></TableHeader>
           <TableBody>
             {listados.map((j) => {
               const n = contarCandidatos(j.id);
